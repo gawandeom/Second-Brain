@@ -4,6 +4,7 @@ import { ApiError } from "../utils/apiError";
 import { ApiResponse } from "../utils/ApiResponse";
 import UserModel from "../model/user.model";
 import jwt from "jsonwebtoken";
+import { asyncHandler } from "../utils/asyncHandler";
 
 const passwordValidation = z
   .string()
@@ -75,3 +76,10 @@ export const loginUser = async (req: Request, res: Response) => {
     .cookie("accessToken", accessToken)
     .json(new ApiResponse(200, user, "User Loged In successfully"));
 };
+
+
+export const logout = asyncHandler(async(req:Request,res:Response)=>{
+  const user = req.user._id;
+  if(!user) throw new ApiError(400,"unothorized Access")
+    res.clearCookie("accessToken").status(200).json(new ApiResponse(200,{},"user Loged out"))
+})
