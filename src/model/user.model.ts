@@ -28,7 +28,7 @@ const UserSchema = new Schema<IUser,UserModelType,UserMethods>({
     required:true,
     select:false,
   }
-})
+},{timestamps:true})
 
 
 UserSchema.pre("save",async function(){

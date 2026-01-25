@@ -12,12 +12,7 @@ const contentSchema = new Schema(
       type: String,
       required: true,
     },
-    tags: [
-      {
-        type: Types.ObjectId,
-        ref: "Tag",
-      },
-    ],
+    tags: [{type:String}],
     link: {
       type: String,
       required: true,

@@ -15,6 +15,8 @@ app.use('/api/v1/users',userRouter)
 import contentRouter from "./routes/content.routes"
 app.use('/api/v1/content',contentRouter)
 
+import shareRouter from "./routes/share.routes"
+app.use("/api/v1/brain",shareRouter)
 app.get('/health',(req:Request,res:Response)=>{
 
 })
