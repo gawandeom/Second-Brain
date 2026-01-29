@@ -83,3 +83,32 @@ export const logout = asyncHandler(async(req:Request,res:Response)=>{
   if(!user) throw new ApiError(400,"unothorized Access")
     res.clearCookie("accessToken").status(200).json(new ApiResponse(200,{},"user Loged out"))
 })
+export const changePassword = asyncHandler(async (req: Request, res: Response) => {
+  const schema = z.object({
+    oldPassword: z.string(),
+    newPassword: passwordValidation,
+  });
+
+  const result = schema.safeParse(req.body);
+
+  if (!result.success) {
+    throw new ApiError(400, "Invalid inputs");
+  }
+
+  const { oldPassword, newPassword } = result.data;
+
+  const user = await UserModel.findById(req.user._id).select("+password");
+
+  if (!user) throw new ApiError(404, "User not found");
+
+  const isMatch = await user.isPasswordCorrect(oldPassword);
+
+  if (!isMatch) throw new ApiError(400, "Old password incorrect");
+
+  user.password = newPassword;
+  await user.save();
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Password changed successfully"));
+});
