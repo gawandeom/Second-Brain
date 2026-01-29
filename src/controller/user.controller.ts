@@ -87,7 +87,7 @@ export const changePassword = asyncHandler(async (req: Request, res: Response) =
   const schema = z.object({
     oldPassword: z.string(),
     newPassword: passwordValidation,
-    
+
 
   });
 
@@ -113,4 +113,26 @@ export const changePassword = asyncHandler(async (req: Request, res: Response) =
   res
     .status(200)
     .json(new ApiResponse(200, {}, "Password changed successfully"));
+});
+export const updateProfile = asyncHandler(async (req: Request, res: Response) => {
+  const updateSchema = z.object({
+    username: z.string().min(3).optional(),
+    email: z.string().email().optional(),
+  });
+
+  const result = updateSchema.safeParse(req.body);
+
+  if (!result.success) {
+    throw new ApiError(400, "Invalid data");
+  }
+
+  const updatedUser = await UserModel.findByIdAndUpdate(
+    req.user._id,
+    result.data,
+    { new: true }
+  ).select("-password");
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, updatedUser, "Profile updated successfully"));
 });
