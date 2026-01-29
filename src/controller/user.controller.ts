@@ -88,6 +88,7 @@ export const changePassword = asyncHandler(async (req: Request, res: Response) =
     oldPassword: z.string(),
     newPassword: passwordValidation,
     
+
   });
 
   const result = schema.safeParse(req.body);
