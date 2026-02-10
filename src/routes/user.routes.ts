@@ -7,7 +7,7 @@ router.post('/register',registerUser)
 router.post ('/login',loginUser)
 router.post('/logout',verifyJwt,logout)
 router.post('/change-password',verifyJwt,changePassword)
-router.post('/update-profile',verifyJwt,updateProfile)
+router.post('/update-profile',verifyJwt,updateProfile) 
 
 
 export default router
